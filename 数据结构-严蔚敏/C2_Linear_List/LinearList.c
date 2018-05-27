@@ -66,17 +66,81 @@ Status GetElem_Sq(SqList *L, int i, ElemType *e)
 }
 // GetElem_Sq
 
-Status LocateElem_Sq(SqList *L, ElemType e, Status (*cpmare)(ElemType))
+int LocateElem_Sq(SqList *L, ElemType e, Status (*compare)(ElemType, ElemType))
 {
     if (!L)
     {
         return ERROR;
     }
-    
+    ElemType *ptr = L->elem;
+    for (int i = 0; i < L->length; ++i)
+    {
+        if ((*compare)(e, *(ptr + i)))
+        {
+            return i + 1;
+        }
+    }
+    return 0;
 }
+// LocateElem_Sq
 
+Status PriorElem_Sq(SqList *L, ElemType cur_e, ElemType *pre_e)
+{
+    if (!L)
+    {
+        return ERROR;
+    }
+    ElemType *ptr = L->elem;
+    for (int i = 1; i < L->length; ++i)
+    {
+        if (*(ptr + i) == cur_e)
+        {
+            *pre_e = *(ptr + i - 1);
+            return OK;
+        }
+    }
+    return ERROR;
+}
+// PriorElem_Sq
 
+Status NextElem_Sq(SqList *L, ElemType cur_e, ElemType *next_e)
+{
+    if (!L)
+    {
+        return ERROR;
+    }
+    ElemType *ptr = L->elem;
+    for (int i = 0; i < L->length - 1; ++i)
+    {
+        if (*(ptr + i) == cur_e)
+        {
+            *next_e = *(ptr + i + 1);
+            return OK;
+        }
+    }// for
+    return ERROR;
+}
+// NextElem_Sq
 
+Status ListInsert_Sq(SqList *L, int i, ElemType e)
+{
+    if (!L || i < 1 || i > L->length + 1)
+    {
+        return ERROR;
+    }
+    if (L->length == L->listsize)
+    {
+        ElemType *newbase = (ElemType *)realloc(L->elem,
+            (L->listsize + LISTINCREMENT) * sizeof (ElemType));
+        if (!newbase)
+        {
+            exit(OVERFLOW);
+        }// if
+        L->elem = newbase;
+        L->listsize += LISTINCREMENT;
+    }// if
+    ElemType *pos = L->elem + i;
+}
 
 
 

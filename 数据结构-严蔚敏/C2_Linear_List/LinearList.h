@@ -8,36 +8,49 @@
 
 typedef int ElemType;
 
-typedef struct
+template <typename ElemType>
+class SqList
 {
+public:
+	Status InitList();
+
+	Status DestroyList();
+
+	Status ClearList();
+
+	Status ListEmpty();
+
+	int ListLength();
+
+	// e返回第i个元素
+	Status GetElem(int i, ElemType &e);
+
+	// cpmare来比较两个元素的匹配问题
+	// 返回e第一次出现的位置
+	// 匹配失败，返回0
+	int LocateElem(ElemType e, Status (*compare)(ElemType, ElemType));
+
+	// 返回前驱
+	// cur_e不是第一个
+	// 如果找不到cur_e，pre_e未定义
+	Status PriorElem(ElemType cur_e, ElemType *pre_e);
+
+	Status NextElem(ElemType cur_e, ElemType *next_e);
+
+	// 在i之前插入，1 <= i <= ListLength(&L) + 1
+	Status ListInsert_Sq(, int i, ElemType e);
+
+	Status ListDelete_Sq(, int i, ElemType *e);
+
+	Status ListTraverse(, Status(*visit)(ElemType));
+
+
+
+private:
 	ElemType *elem; // 存储空间基址
 	int length;
 	int listsize;
-} SqList;
+};
 
-Status InitList_Sq(SqList *L);
-
-Status DestroyList(SqList *L);
-
-Status ClearList_Sq(SqList *L);
-
-Status ListEmpty_Sq(SqList *L);
-
-int ListLength_Sq(SqList *L);
-
-// e返回第i个元素
-Status GetElem_Sq(SqList *L, int i, ElemType *e);
-
-int LocateElem_Sq(SqList *L, ElemType e, Status (*compare)(ElemType));
-
-Status PriorElem_Sq(SqList *L, ElemType cur_e, ElemType *pre_e);
-
-Status NextElem_Sq(SqList *L, ElemType cur_e, ElemType *next_e);
-
-Status ListInsert_Sq(SqList *L, int i, ElemType e);
-
-Status ListDelete_Sq(SqList *L, int i, ElemType *e);
-
-Status ListTraverse(SqList *L, Status(*visit)(ElemType));
 
 #endif
