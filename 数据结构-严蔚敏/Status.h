@@ -11,6 +11,6 @@
 #define INFEASIBLE -1
 #define  MY_OVERFLOW -2
 
-typedef int Status;
+using Status = int;
 
 #endif

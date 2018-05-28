@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "ostream": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "xutility": "cpp",
+        "sstream": "cpp"
     }
 }
