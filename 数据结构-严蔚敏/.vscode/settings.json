@@ -3,6 +3,7 @@
         "ostream": "cpp",
         "memory": "cpp",
         "xutility": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "climits": "cpp"
     }
 }

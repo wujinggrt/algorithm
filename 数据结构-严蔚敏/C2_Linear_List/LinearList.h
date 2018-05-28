@@ -237,12 +237,12 @@ class LinkList
 public:
 	LinkList()
 	{}
-	
+
 	Status InitList()
 	{
 		if (head_ == nullptr && tail_ == nullptr)
 		{
-			head_ = new ElemType();
+			head_ = new ElemType(); 
 			tail_ = head_;
 		}// if
 	}

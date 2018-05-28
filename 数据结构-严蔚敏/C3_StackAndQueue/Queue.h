@@ -24,7 +24,15 @@ public:
     }
     // InitQueue
 
-    Status 
+    Status DestroyQueue()
+    {
+        if (!base_)
+        {
+            delete [] base_;
+        }
+        base_ = nullptr;
+        front_ = rear_ = 0;
+    }
 
 
 private:

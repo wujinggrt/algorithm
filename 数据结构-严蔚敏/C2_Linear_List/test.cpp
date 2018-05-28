@@ -14,6 +14,6 @@ class Hehe
 
 int main()
 {
-   auto p = make_shared<Hehe> ();
+    cout << INT_MAX << endl;
     return 0;
 }
