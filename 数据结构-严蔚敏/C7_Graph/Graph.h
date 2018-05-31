@@ -14,8 +14,7 @@ enum class GraphKind
     UDN
 };
 
-// T denote vertex type
-// InfoType denote information type it hold.
+// 弧的信息
 template <typename T, typename InfoType>
 struct ArcCell
 {
@@ -90,6 +89,28 @@ private:
 
     bool CreateUDG()
     {
+        cout << "输入顶点、弧数量:";
+        cin >> vertexs_num_
+            >> arcs_num_;
+        if (vertexs_num_ > MAX_VERTEX_NUM || 
+            arcs_num_ > MAX_VERTEX_NUM * MAX_VERTEX_NUM)
+        {
+            cout << "过多!" << endl;
+            return ;
+        }
+        cout << "输入顶点数据:"  << endl;
+        for (int i = 0; i < vertexs_num_; ++i)
+        {
+            cin >> vertexs_[i];
+        }
+        // init adjacent matrix
+        for (int i = 0; i < vertexs_num_; ++i)
+        {
+            for (int j = 0; j < vertexs_num_; ++j)
+            {
+                arcs_[i][j].adj = 
+            }
+        }
         return true;
     }
 

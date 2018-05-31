@@ -34,7 +34,6 @@ public:
         front_ = rear_ = 0;
     }
 
-
 private:
     T *base_ = nullptr;
     int front_;

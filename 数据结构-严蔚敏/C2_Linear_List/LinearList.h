@@ -231,26 +231,105 @@ struct LNode
 	LNode *next = nullptr;
 };
 
+template<typename T>
+using Link = LNode*;
+
+template<typename T>
+using Position = LNode*;
+
+// 循环链表
 template <typename ElemType>
 class LinkList
 {
 public:
 	LinkList()
-	{}
-
-	Status InitList()
+        : len_(0)
 	{
-		if (head_ == nullptr && tail_ == nullptr)
-		{
-			head_ = new ElemType(); 
-			tail_ = head_;
-		}// if
-	}
-	
+        InitList();
+    }
+
+	Status InitList();
+
+    // release all
+    Status DestroyList();
+
+    // 置为空表
+    Status ClearList();
+
+    // s插入第一结点
+    Status InsertFirst(ElemType e);
+    
+   
 private:
-	LNode<ElemType> *head_ = nullptr;
-	LNode<ElemType> *tail_ = nullptr;
+    Status MakeNode(Link<ElemType> &p, ElemType e);
+
+    Status FreeNode(Link<ElemType> &p);
+
+private:
+	Link<ElemType> head_ = nullptr;
+	Link<ElemType> tail_ = nullptr;
 	int len_;
 };
+// LinkList
+
+template<typename T>
+Status LinkList<T>::InitList()
+{
+    if (head_ == nullptr && tail_ == nullptr)
+    {
+        head_ = new LNode<T>(); 
+        tail_ = head_;
+        head_->next = tail_;
+        tail_->prior = head_;
+    }// if
+}
+
+template<typename T>
+Status LinkList<T>::DestroyList()
+{
+    auto temp = head_->next;
+    while (temp != tail_)
+    {
+        auto temp2 = temp->next;
+        FreeNode(temp);
+        temp = temp2;
+    }
+}
+
+template<typename T>
+Status LinkList<T>::InsertFirst(T e)
+{
+    auto temp = new LNode<T>();
+    temp->data = e;
+
+    temp->next = head_->next;
+    temp->prior = head_;
+
+    head_->next->prior = temp;
+    head_->next = temp;
+    
+    return OK;
+}
+
+template<typename T>
+Status LinkList<T>::MakeNode(Link<T> &p, T e)
+{
+    if (!p)
+    {
+        p = new LNode<T>();
+    }
+    p->data = e;
+    return OK;
+}
+
+template<typename T>
+Status LinkList<T>::FreeNode(Link<T> &p)
+{
+    p->prior->next = p->next;
+    p->next->prior = p->prior;
+    delete p;
+    p = nullptr;
+    return OK;
+}
 
 #endif

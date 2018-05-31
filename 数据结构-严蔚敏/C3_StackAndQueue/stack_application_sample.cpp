@@ -132,6 +132,8 @@ public:
 	}
 
 	// 编号由上至下1->n
+	// 而且编号小的都可以放置在编号大的之上
+	// 所以在递归的时候，都是递归到最顶层来执行
 	void Hanoi(int n, string x, string y, string z)
 	{
 		if (n == 1)
