@@ -173,5 +173,42 @@ private:
     int vertexs_num_;
     int arcs_num_;
 };
+// MatrixGraph
+/**************************
+ * MatrixGraph
+**************************/
+
+template<typename InfoType = string>
+struct ArcNode
+{
+    // 该弧所指向的定点的位置
+    int adjvex; 
+    // 指向下一条弧的指针
+    ArcNode *nextarc = nullptr;
+    // 该弧相关信息的指针
+    InfoType *info = nullptr;
+};
+
+template<typename VertexType, typename InfoType = string>
+struct VNode
+{
+    // 顶点信息
+    VertexType data;
+    // 指向第一条依附该顶点的弧的指针
+    ArcNode<InfoType> *firstarc = nullptr;
+};
+
+template<typename VertexType, typename InfoType = string>
+using AdjList = VNode<VertexType, InfoType>[MAX_VERTEX_NUM];
+
+template<typename VertexType>
+class ALGraph
+{
+public:
+
+private:
+    AdjList<VertexType> vertices_;
+
+};
 
 #endif
