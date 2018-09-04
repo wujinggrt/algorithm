@@ -1,30 +1,29 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-template<typename T, typename U = string>
 class Hehe
 {
 public:
-    Hehe(T t, U u)
-        : t_(t),
-        u_(u)
-    {}
-
-
-    void Foo()
-    {
-        cout << t_ << " " << u_ << endl;
-    }
-
-private:
-    T t_;
-    U u_;
+    Hehe(int i = 0)
+        : _i{i}
+        {
+            cout << "__ctor" << endl;
+            cout << _i << endl;
+        }
     
+    int _i;
 };
 
 int main()
 {
-    Hehe<int, char*> h(1, {"ss"});
-    h.Foo();
+    Hehe h{20};
+    Hehe hh(2);
+    vector<int> vec{10};
+    double d = 3.14;
+    int i = {static_cast<int>(d)};
+    int ii = {static_cast<int>(d)};
+    cout << i << " " << d << endl;
+    cout << vec.size() << endl;
     return 0;
 }
