@@ -5,6 +5,13 @@
 #include <iostream>
 #include <queue>
 #include <climits>
+#include <string>
+
+#define PRINTLN(v) std::cout << (v) << std::endl;
+#define PRINTENTER std::cout << std::endl;
+#define PRINT(v) std::cout << (v);
+#define PRINT_LINE std::cout << __LINE__ << std::endl;
+#define PRINT_FUNC std::cout << __func__ << std::endl;
 
 // index of vertices.
 struct Arc
@@ -73,7 +80,7 @@ public:
     // taverse
 
     // input the index of vertices.
-    void BFS(int start)
+    void bfs(int start)
     {
         auto s = &(vertices_[start]);
         s->color = Color::Gray;
@@ -85,18 +92,61 @@ public:
         {
             auto u = q.front();
             q.pop();
-            for (auto v = u->next; v; v = v->next)
+            std::cout <<"ready to visit:";
+            for (auto arc = u->next; arc; arc = arc->next)
             {
-                if (v.color == Color::White)
+                auto v = &vertices_[arc->i];
+                if (v->color == Color::White)
                 {
                     v->color = Color::Gray;
                     v->d = u->d + 1;
                     v->parent = u;
                     q.push(v);
+                    std::cout << v->v << " ";
                 }
             }
+            std::cout << std::endl;
             u->color = Color::Black;
+            std::cout << "visited:" << u->v <<  std::endl;
         }
+    }
+
+    void print_path(int s, int v)
+    {
+        // exception
+        if (v < 0 || v >= vertices_.size())
+        {
+            std::cout << "err" << std::endl;
+            return;
+        }
+        // base case.
+        if (v == s)
+        {
+            std::cout << s << " ";
+        }
+        else if (!vertices_[v].parent)
+        {
+            std::cout << "no path!!!" << std::endl;
+            return;
+        }
+        else
+        {
+            print_path(s, find(vertices_[v].parent->v));
+            std::cout << v << " ";
+        }
+    }
+
+private:
+    int find(const T &v)
+    {
+        for (int i = 0; i < vertices_.size(); ++i)
+        {
+            if (vertices_[i].v == v)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
 private:
@@ -113,7 +163,7 @@ private:
         
         Color color = Color::White;
         int d = INT_MAX;
-        ArcNode *parent = nullptr;
+        VertexNode *parent = nullptr;
     };
 
     std::vector<VertexNode> vertices_;

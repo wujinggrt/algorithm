@@ -3,18 +3,10 @@
 
 using namespace std;
 
-#define PRINT_LINE std::cout << __LINE__ << std::endl;
-
-int main()
+template<typename Vertex, typename Arc>
+void list_graph(Vertex &v, Arc &vec_arcs)
 {
-    vector<Arc> vec_arcs{
-        Arc{0, 1}, Arc{0, 3},
-        Arc{1, 4},
-        Arc{2, 5}, Arc{2, 4},
-        Arc{3, 1},
-        Arc{4, 3},
-        Arc{5, 5}};
-    vector<int> v{0, 1, 2, 3, 4, 5};
+        
     ListGraph<int> lg(v);
     printf("%s\n", "LstGraph");
     for (const auto &e: vec_arcs)
@@ -30,6 +22,27 @@ int main()
 4: 3
 5: 5
 */
+    lg.bfs(0);
+/*
+ready to visit:3 1
+visited:0
+ready to visit:
+visited:3
+ready to visit:4
+visited:1
+ready to visit:
+visited:4
+*/
+    lg.print_path(0, 4);
+    cout << endl;
+/*
+0 1 4
+*/
+}
+
+template<typename Vertex, typename Arc>
+void matrix_graph(Vertex &v, Arc &vec_arcs)
+{
     printf("%s\n", "MatrixGraph");
     MatrixGraph<int> mg(v);
     for (auto &e: vec_arcs)
@@ -46,7 +59,25 @@ MatrixGraph
 0 0 0 1 0 0
 0 0 0 0 0 1
 */
+}
 
+void test()
+{
+    vector<Arc> vec_arcs{
+        Arc{0, 1}, Arc{0, 3},
+        Arc{1, 4},
+        Arc{2, 5}, Arc{2, 4},
+        Arc{3, 1},
+        Arc{4, 3},
+        Arc{5, 5}};
+    vector<int> v{0, 1, 2, 3, 4, 5};
+
+    list_graph(v, vec_arcs);
+}
+
+int main()
+{
+    test();
 
     return 0;
 }
