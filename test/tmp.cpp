@@ -15,8 +15,18 @@ struct Hehe
 	char _c = 'a';
 };
 
+void func()
+{
+	struct A
+	{
+		int i_ = 1;
+	};
+	A a;
+	cout << a.i_ << endl;
+}
+
 int main()
 {
-	cout << (Hehe{1, 'c'})._i << endl;
+	func();
 	return 0;
 }

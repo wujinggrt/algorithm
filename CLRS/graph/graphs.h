@@ -1,12 +1,24 @@
 #ifndef GRAPHS_H__
 #define GRAPHS_H__
 
+#include <vector>
+#include <iostream>
+#include <queue>
+#include <climits>
+
 // index of vertices.
 struct Arc
 {
     int tail = 0;
     int head = 0;
     int weight = 1;
+};
+
+enum class Color
+{
+    White,
+    Gray,
+    Black
 };
 
 /* 
@@ -60,6 +72,33 @@ public:
     }
     // taverse
 
+    // input the index of vertices.
+    void BFS(int start)
+    {
+        auto s = &(vertices_[start]);
+        s->color = Color::Gray;
+        s->d = 0;
+        s->parent = nullptr;
+        std::queue<VertexNode*> q;
+        q.push(s);
+        while (!q.empty())
+        {
+            auto u = q.front();
+            q.pop();
+            for (auto v = u->next; v; v = v->next)
+            {
+                if (v.color == Color::White)
+                {
+                    v->color = Color::Gray;
+                    v->d = u->d + 1;
+                    v->parent = u;
+                    q.push(v);
+                }
+            }
+            u->color = Color::Black;
+        }
+    }
+
 private:
     struct ArcNode
     {
@@ -71,6 +110,10 @@ private:
     {
         T v;
         ArcNode *next = nullptr;
+        
+        Color color = Color::White;
+        int d = INT_MAX;
+        ArcNode *parent = nullptr;
     };
 
     std::vector<VertexNode> vertices_;
@@ -125,6 +168,5 @@ private:
 /* 
 MatrixGraph
 */ 
-
 
 #endif

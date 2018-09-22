@@ -1,6 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <string>
 #include <cstdio>
 #include "graphs.h"
 
@@ -49,5 +46,7 @@ MatrixGraph
 0 0 0 1 0 0
 0 0 0 0 0 1
 */
+
+
     return 0;
 }
