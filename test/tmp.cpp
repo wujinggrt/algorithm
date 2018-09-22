@@ -9,12 +9,14 @@ void f(int i = 1)
 	cout << i << endl;
 }
 
+struct Hehe
+{
+	int _i = 0;
+	char _c = 'a';
+};
+
 int main()
 {
-	vector<int> v{1, 2, 3, 4};
-	std::swap(v[1], v[2]);
-	for (auto &e: v)
-		cout << e << endl;
-	f();
+	cout << (Hehe{1, 'c'})._i << endl;
 	return 0;
 }

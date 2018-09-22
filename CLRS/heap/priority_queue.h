@@ -1,5 +1,5 @@
-#ifndef PRIORITY_QUEUE_H
-#define PRIORITY_QUEUE_H
+#ifndef PRIORITY_QUEUE_H__
+#define PRIORITY_QUEUE_H__
 
 template<typename T>
 class MinPriorityQueue
@@ -66,6 +66,8 @@ private:
         }
     }
 
+    // v <> finded
+    int find(const T &v);
 private:
     std::vector<T> values_;
 };

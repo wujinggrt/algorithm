@@ -46,3 +46,28 @@ si==ul:1
 */
 ```
 可以看出，应该是从右边开始进行逻辑与比较，大小为小的一方。
+
+## POD
+
+```C++
+struct Hehe
+{
+	int _i = 0;
+	char _c = 'a';
+};
+/*
+ceshi
+*/
+	Hehe h;
+	Hehe hh = {22, '4'};
+	Hehe hhh{3, '3'};
+	cout << h._i << " " << h._c << endl;
+	cout << hh._i << " " << hh._c << endl;
+	cout << hhh._i << " " << hhh._c << endl;
+/*
+outputs:
+0 a
+22 4
+3 3
+*/
+```
