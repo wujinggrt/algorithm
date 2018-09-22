@@ -1,6 +1,6 @@
-#include <iostream>
-#include <vector>
 #include <ctime>
+
+#include <iostream>
 #include <queue>
 
 #include "./priority_queue.h"

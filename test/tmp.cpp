@@ -27,6 +27,9 @@ void func()
 
 int main()
 {
-	func();
+	int i = 109;
+	auto &ri = i;
+	ri = 9;
+	cout << i << endl;
 	return 0;
 }

@@ -1,7 +1,13 @@
-#include <cstdio>
 #include "graphs.h"
 
 using namespace std;
+
+template<typename Graph>
+void graph_dfs(Graph &g);
+template<typename Graph>
+void graph_bfs(Graph &g);
+template<typename Graph>
+void graph_traverse(Graph &lg);
 
 template<typename Vertex, typename Arc>
 void list_graph(Vertex &v, Arc &vec_arcs)
@@ -13,15 +19,39 @@ void list_graph(Vertex &v, Arc &vec_arcs)
     {
         lg.set_edge(e);
     }
-    lg.traverse();
+    graph_dfs(lg);
+}
+
+template<typename Graph>
+void graph_dfs(Graph &lg)
+{
+    lg.dfs();
 /*
-0: 3 1
-1: 4
-2: 4 5
-3: 1
-4: 3
-5: 5
+LstGraph
+0
+
+visited:4
+visited:1
+visited:3
+visited:0
+1
+
+2
+
+visited:5
+visited:2
+3
+
+4
+
+5
+
 */
+}
+
+template<typename Graph>
+void graph_bfs(Graph &lg)
+{
     lg.bfs(0);
 /*
 ready to visit:3 1
@@ -37,6 +67,20 @@ visited:4
     cout << endl;
 /*
 0 1 4
+*/
+}
+
+template<typename Graph>
+void graph_traverse(Graph &lg)
+{
+    lg.traverse();
+/*
+0: 3 1
+1: 4
+2: 4 5
+3: 1
+4: 3
+5: 5
 */
 }
 

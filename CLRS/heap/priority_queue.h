@@ -1,6 +1,8 @@
 #ifndef PRIORITY_QUEUE_H__
 #define PRIORITY_QUEUE_H__
 
+#include <vector>
+
 template<typename T>
 class MinPriorityQueue
 {

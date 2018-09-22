@@ -1,10 +1,12 @@
 #ifndef GRAPHS_H__
 #define GRAPHS_H__
 
+#include <climits>
+#include <cstdio>
+
 #include <vector>
 #include <iostream>
 #include <queue>
-#include <climits>
 #include <string>
 
 #define PRINTLN(v) std::cout << (v) << std::endl;
@@ -42,9 +44,16 @@ auto print_graph = [](auto e){
         std::cout << std::endl;
     };
 
+auto print_visited = [] (auto u) {
+    std::cout << "visited:" << u.v << std::endl;
+};
+
 template<typename T>
 class ListGraph
 {
+struct ArcNode;
+struct VertexNode;
+
 public:
     template<typename Iter>
     ListGraph(Iter first, Iter end)
@@ -80,8 +89,15 @@ public:
     // taverse
 
     // input the index of vertices.
-    void bfs(int start)
+    template<typename Callable = decltype(print_visited)>
+    void bfs(int start, Callable call = print_visited)
     {
+        for (auto &u: vertices_)
+        {
+            u.color = Color::White;
+            u.d = INT_MAX;
+            u.parent = nullptr;
+        }
         auto s = &(vertices_[start]);
         s->color = Color::Gray;
         s->d = 0;
@@ -90,7 +106,7 @@ public:
         q.push(s);
         while (!q.empty())
         {
-            auto u = q.front();
+            auto &u = q.front();
             q.pop();
             std::cout <<"ready to visit:";
             for (auto arc = u->next; arc; arc = arc->next)
@@ -106,8 +122,30 @@ public:
                 }
             }
             std::cout << std::endl;
+            call(*u);
             u->color = Color::Black;
-            std::cout << "visited:" << u->v <<  std::endl;
+        }
+    }
+
+    template<typename Callable = decltype(print_visited)>
+    void dfs(Callable call = print_visited)
+    {
+        for (auto &u: vertices_)
+        {
+            u.color = Color::White;
+            u.parent = nullptr;
+        }
+        auto time = 0;
+        for (auto &u: vertices_)
+        {
+            [&u](){
+                PRINTLN((u.v))
+                PRINTENTER
+            }();
+            if (u.color == Color::White)
+            {
+                dfs_visit(u, time, call);
+            }
         }
     }
 
@@ -149,6 +187,27 @@ private:
         return -1;
     }
 
+    template<typename Callable = decltype(print_visited)>
+    void dfs_visit(VertexNode &u, int &time, Callable call = print_visited)
+    {
+        ++time;
+        u.d = time;
+        u.color = Color::Gray;
+        for (auto arc = u.next; arc; arc = arc->next)
+        {
+            auto &v = vertices_[arc->i];
+            if (v.color == Color::White)
+            {
+                v.parent = &u;
+                dfs_visit(v, time, call);
+            }
+        }
+        call(u);
+        u.color = Color::Black;
+        ++time;
+        u.f = time;
+    }
+
 private:
     struct ArcNode
     {
@@ -164,6 +223,8 @@ private:
         Color color = Color::White;
         int d = INT_MAX;
         VertexNode *parent = nullptr;
+
+        int f = 0;
     };
 
     std::vector<VertexNode> vertices_;
