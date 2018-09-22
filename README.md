@@ -4,4 +4,4 @@
 
 |string|site|
 |---|-----------|
-|KMP|[kmp.cpp](./CLRS/kmp.cpp)
+|KMP|[kmp.cpp](./CLRS/tring/kmp.cpp)

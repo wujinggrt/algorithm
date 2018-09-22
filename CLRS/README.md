@@ -1,6 +1,6 @@
 # 一些bugs
 
-## kmp
+## kmp,不同数值类型的比较
 
 在kmp.cpp中的循环，循环判断下标（int类型）与std::string::size_type类型比较发生了循环只执行一部分的问题。
 
