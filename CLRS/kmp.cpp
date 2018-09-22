@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-auto get_next(const string &p)
+vector<int> get_next(const string &p)
 {
     vector<int> next(p.size(), 0);
     // 为了好操作，设置为-1
@@ -30,7 +30,8 @@ auto get_next(const string &p)
         next[1] = 0, P的前一位只有一个字符，只可能取到0了。
         next[2]开始正常匹配。
        */
-        if (j == -1 || p[i] == next[j])
+      // j = -1, 短路，不进行比较第二个next[j]
+        if (j == -1 || p[i] == p[j])
         {
             ++i;
             ++j;
@@ -46,4 +47,62 @@ auto get_next(const string &p)
     return next;
 }
 
- 
+void print_vec(const vector<int> &v)
+{
+    for (const auto &e: v)
+    {
+        cout << e << " ";
+    }
+    cout << endl;
+}
+
+template<typename T>
+void print(T v)
+{
+    cout << v << endl;
+}
+
+auto kmp(const string &s, const string &p)
+{
+    auto next = get_next(p);
+    int i = 0;
+    int j = 0;
+    while (i != s.size() && j != p.size())
+    {
+        // j = -1的情况为开头就不匹配。
+        // 然后去else，取到-1,此时i没动，那么下一次if就驱使i、j前进
+        // i->下一个, j->0，继续比较j的头
+        if (j == -1 || s[i] == p[j])
+        {
+            ++i;
+            ++j;
+        }
+        else
+        {
+            // i 不动， j 回退
+            j = next[j];
+        }
+    }
+    if (j == p.size())
+    {
+        return i - j;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+void test()
+{
+    string s = "ababababababababababababababababababcaHello world!";
+    string p = "worl";
+    auto i = kmp(s, p);
+    cout << i << endl;
+}
+
+int main()
+{
+    test();
+    return 0;
+}

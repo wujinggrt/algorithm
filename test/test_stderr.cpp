@@ -1,0 +1,11 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	vector<int> v{1, 2, 3};
+	cout << v.size() << " " << v.capacity() << endl;
+	cout << v.size() << " " << v.capacity() << endl;
+	return 0;
+}
