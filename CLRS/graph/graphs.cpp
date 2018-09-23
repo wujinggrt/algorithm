@@ -135,7 +135,6 @@ visited:2
 5
 
 */
-    GRAPH_RUN(v_2, vec_arcs_2, mst_prim, 0)
 }
 
 int main()
@@ -146,7 +145,8 @@ int main()
     };
     PriorityQueue<int, decltype(cmp)>pq(v.begin(), v.end(), cmp);
     pq.change_val(5, 2);
-    for (auto &e: vector<char>(v.size()))
+    pq.push(5);
+    for (auto &e: vector<char>(pq.size()))
     {
         cout << pq.top() << " ";
         pq.pop();

@@ -27,6 +27,13 @@ public:
     {
         std::make_heap(v_.begin(), v_.end(), cmp_);
     }
+    
+    template<typename It>
+    PriorityQueue(Compare cmp)
+        : cmp_{cmp}
+    {
+        v_.reserve(10);
+    }
 
     T top() const 
     {
@@ -52,7 +59,7 @@ public:
     void push(const T &v)
     {
         v_.push_back(v);
-        std::push_heap(v_.begin(), v.end(), cmp_);
+        std::push_heap(v_.begin(), v_.end(), cmp_);
     }
 
     // if and only if compare successfully, it performs. The original one goes downwards.
@@ -299,53 +306,52 @@ public:
         return result;
     }
 
-    auto mst_prim(int r = 0)
-    {
-        auto cmp = [&](int lhs, int rhs) {
-            return vertices_[lhs].d > vertices_[rhs].d;
-        };
-        std::priority_queue<
-            int, 
-            std::vector<int>, 
-            decltype(cmp)> pq(cmp);
-        std::vector<bool> in_tree(vertices_.size(), false);
-        for (int i = 0; i < vertices_.size(); ++i)
-        {
-            vertices_[i].d = INT_MAX;
-            vertices_[i].parent = nullptr;
+    // auto mst_prim(int r = 0)
+    // {
+    //     auto cmp = [&](VertexNode *lhs, VertexNode *rhs) {
+    //         return lhs->d > rhs->d;
+    //     };
+    //     std::vector<VertexNode*>  pq;
+    //     pq.reserve(vertices_.size() - 1);
+    //     std::vector<bool> in_tree(vertices_.size(), false);
+    //     for (int i = 0; i < vertices_.size(); ++i)
+    //     {
+    //         vertices_[i].d = INT_MAX;
+    //         vertices_[i].parent = nullptr;
 
-            if (i == r)
-            {
-                vertices_[r].d = 0;
-            }
-            pq.push(i);
-            in_tree[i] = true;
-        }
-        std::vector<Arc> result(vertices_.size() - 1, Arc{0, 0, INT_MAX});
-        while (!pq.empty())
-        {
-            auto u = pq.top();
-            pq.pop();
-            in_tree[u] = false;
-            // 有限队列没有因为d的改变而维持
-            // 需要自己实现了decresing的优先队列
-            for (auto pv = vertices_[u].next; pv && pv->i != u; pv = pv->next)
-            {
-                auto v = pv->i;
-                if (in_tree[v] && pv->weight < vertices_[v].d)
-                {
-                    vertices_[v].parent = &vertices_[u];
-                    vertices_[v].d = pv->weight;
-                    if (vertices_[v].d < result[u].weight)
-                    {
-                        result[u] = Arc{u, v, pv->weight};
-                    }
-                }
-            }
-        }
-        PRINT_EDGE_WITH_WEIGHT(result)
-        return result;
-    }
+    //         if (i == r)
+    //         {
+    //             vertices_[r].d = 0;
+    //         }
+    //         pq.push_back(&vertices_[i]);
+    //     }
+    //     std::vector<Arc> result(vertices_.size() - 1, Arc{0, 0, INT_MAX});
+    //     std::make_heap(pq.begin(), pq.end(), cmp);
+    //     while (!pq.empty())
+    //     {
+    //         std::pop_heap(pq.begin(), pq.end(), cmp);
+    //         auto u = pq.back();
+    //         pq.pop_back();
+    //         in_tree[u] = true;
+    //         // 有限队列没有因为d的改变而维持
+    //         // 需要自己实现了decresing的优先队列
+    //         for (auto pv = vertices_[u].next; pv && pv->i != u; pv = pv->next)
+    //         {
+    //             auto v = pv->i;
+    //             if (!in_tree[v] && pv->weight < vertices_[v].d)
+    //             {
+    //                 vertices_[v].parent = &vertices_[u];
+    //                 vertices_[v].d = pv->weight;
+    //                 if (vertices_[v].d < result[u].weight)
+    //                 {
+    //                     result[u] = Arc{u, v, pv->weight};
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     PRINT_EDGE_WITH_WEIGHT(result)
+    //     return result;
+    // }
 
     // after bfs.
     void print_path(int s, int v)

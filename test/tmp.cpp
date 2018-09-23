@@ -54,10 +54,6 @@ int main()
 	auto cmp = [](int lhs, int rhs){
 		return lhs > rhs;
 	};
-	make_heap(v.begin(), v.end(), cmp);
-	PRINT_V(v)
-	pop_heap(v.begin(), v.end(), cmp);
-	PRINT_V(v)
 	pop_heap(v.begin(), v.end(), cmp);
 	PRINT_V(v)
 	
