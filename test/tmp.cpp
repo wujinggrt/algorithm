@@ -15,7 +15,7 @@ struct Hehe
 	char _c = 'a';
 };
 
-void func()
+auto func()
 {
 	struct A
 	{
@@ -27,9 +27,6 @@ void func()
 
 int main()
 {
-	int i = 109;
-	auto &ri = i;
-	ri = 9;
-	cout << i << endl;
+	func();
 	return 0;
 }

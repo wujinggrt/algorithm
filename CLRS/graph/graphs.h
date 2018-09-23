@@ -149,6 +149,12 @@ public:
         }
     }
 
+    auto mst_kruskal()
+    {
+        
+    }
+
+    // after bfs.
     void print_path(int s, int v)
     {
         // exception
@@ -175,18 +181,6 @@ public:
     }
 
 private:
-    int find(const T &v)
-    {
-        for (int i = 0; i < vertices_.size(); ++i)
-        {
-            if (vertices_[i].v == v)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     template<typename Callable = decltype(print_visited)>
     void dfs_visit(VertexNode &u, int &time, Callable call = print_visited)
     {
@@ -207,12 +201,64 @@ private:
         ++time;
         u.f = time;
     }
+    int find(const T &v)
+    {
+        for (int i = 0; i < vertices_.size(); ++i)
+        {
+            if (vertices_[i].v == v)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+// Disjoint set.
+private:
+    void make_set(VertexNode &v)
+    {
+        x.parent = &x;
+        x.d = 0;
+    }
+
+    void union_set(VertexNode &x, VertexNode &y)
+    {
+        link_nodes(find_set(x), find_set(y);
+    }
+
+    auto find_set(const VertexNode &v)
+    {
+        auto ret = v.parent;
+        if (&v != v.parent)
+        {
+            ret = find_set(*v.p);
+        }
+        return ret;
+    }
+
+    auto link_nodes(VertexNode *x, VertexNode *y)
+    {
+        if (x->d > y->d)
+        {
+            y->parent = x;
+        }
+        else
+        {
+            x->parent = y;
+            if (x->d == y->d)
+            {
+                ++(y->d);
+            }
+        }
+    }
 
 private:
     struct ArcNode
     {
         int i;
         ArcNode *next = nullptr;
+
+        int weight = 0;
     };
 
     struct VertexNode
@@ -221,6 +267,7 @@ private:
         ArcNode *next = nullptr;
         
         Color color = Color::White;
+        // also for disjoint set operations as rank.
         int d = INT_MAX;
         VertexNode *parent = nullptr;
 
