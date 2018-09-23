@@ -16,6 +16,111 @@
 #define PRINT_LINE std::cout << __LINE__ << std::endl;
 #define PRINT_FUNC std::cout << __func__ << std::endl;
 
+template<typename T, typename Compare>
+class PriorityQueue
+{
+public:
+    template<typename It>
+    PriorityQueue(It first, It last, Compare cmp)
+        : v_(first, last),
+        cmp_{cmp}
+    {
+        std::make_heap(v_.begin(), v_.end(), cmp_);
+    }
+
+    T top() const 
+    {
+        return v_[0];
+    }
+
+    void pop()
+    {
+        std::pop_heap(v_.begin(), v_.end(), cmp_);
+        v_.pop_back();
+    }
+
+    size_t size() const
+    {
+        return v_.size();
+    }
+
+    bool empty() const 
+    {
+        return (size() ? false : true);
+    }
+
+    void push(const T &v)
+    {
+        v_.push_back(v);
+        std::push_heap(v_.begin(), v.end(), cmp_);
+    }
+
+    // if and only if compare successfully, it performs. The original one goes downwards.
+    // if this is a min-priority queue, then cmp is greater,
+    // src > dst, it works.
+    bool change_val(const T &src, const T &dst)
+    {
+        if (!cmp_(src, dst))
+        {
+            return false;
+        }
+        int i = 0;
+        for (; i < v_.size(); ++i)
+        {
+            if (v_[i] == src)
+            {
+                break;
+            }
+        }
+        if (i == v_.size())
+        {
+            return false;
+        }
+        else
+        {
+            v_[i] = dst;
+            if (i == 0)
+            {
+                return true;
+            }
+            for (int l = i / 2 - 1; l > 0; l = l / 2 - 1)
+            {
+                if (!cmp_(v_[l], v_[i]))
+                {
+                    return true;
+                }
+                std::swap(v_[l], v_[i]);
+                i = l;
+            }
+            return true;
+        }
+    }
+    
+private:
+    std::vector<T> v_;
+    Compare cmp_;
+};
+
+/********************************************************* 
+Forward declaration
+*/
+
+template<typename T>
+class ListGraph;
+
+template<typename T>
+class MatrixGraph;
+
+template<typename T>
+void dfs(const ListGraph<T> &);
+
+template<typename T>
+void bfs(const ListGraph<T> &);
+
+/********************************************************* 
+Forward declaration
+*/
+
 // index of vertices.
 struct Arc
 {
@@ -196,14 +301,50 @@ public:
 
     auto mst_prim(int r = 0)
     {
-        for (auto &u: vertices_)
+        auto cmp = [&](int lhs, int rhs) {
+            return vertices_[lhs].d > vertices_[rhs].d;
+        };
+        std::priority_queue<
+            int, 
+            std::vector<int>, 
+            decltype(cmp)> pq(cmp);
+        std::vector<bool> in_tree(vertices_.size(), false);
+        for (int i = 0; i < vertices_.size(); ++i)
         {
-            u.d = INT_MAX;
-            u.parent = nullptr;
+            vertices_[i].d = INT_MAX;
+            vertices_[i].parent = nullptr;
+
+            if (i == r)
+            {
+                vertices_[r].d = 0;
+            }
+            pq.push(i);
+            in_tree[i] = true;
         }
-        r.d = 0;
-        std::priority_queue<VertexNode*> pq;
-        for (auto &)
+        std::vector<Arc> result(vertices_.size() - 1, Arc{0, 0, INT_MAX});
+        while (!pq.empty())
+        {
+            auto u = pq.top();
+            pq.pop();
+            in_tree[u] = false;
+            // 有限队列没有因为d的改变而维持
+            // 需要自己实现了decresing的优先队列
+            for (auto pv = vertices_[u].next; pv && pv->i != u; pv = pv->next)
+            {
+                auto v = pv->i;
+                if (in_tree[v] && pv->weight < vertices_[v].d)
+                {
+                    vertices_[v].parent = &vertices_[u];
+                    vertices_[v].d = pv->weight;
+                    if (vertices_[v].d < result[u].weight)
+                    {
+                        result[u] = Arc{u, v, pv->weight};
+                    }
+                }
+            }
+        }
+        PRINT_EDGE_WITH_WEIGHT(result)
+        return result;
     }
 
     // after bfs.

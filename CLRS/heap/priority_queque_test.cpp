@@ -45,5 +45,16 @@ Print priority:
 1 10 11 11 13 40 40 45 46 50 51 52 66 67 74 76 80 81 83 97
 1 10 11 11 13 40 40 45 46 50 51 52 66 67 74 76 80 81 83 97
 */
+    priority_queue<int, std::vector<int>, decltype(cmp)> pq(cmp);
+    for (auto &e: v)
+    {
+        pq.push(e);
+    }
+    for (auto &e: vector<char>(v.size()))
+    {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+    cout << "\n";
     return 0;
 }

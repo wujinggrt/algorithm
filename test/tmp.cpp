@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 #include "tmp.h"
@@ -39,9 +40,26 @@ auto func()
 	cout << (A{(4)}).i_ << endl;
 }
 
+#define PRINT_V(v) \
+	for (auto &e: (v))\
+	{\
+		cout << e << " ";\
+	}\
+	cout << '\n';
+
 int main()
 {
-	FriendTest<int> f(100);
-	print(f, 2);
+    std::vector<int> v { 3, 1, 4, 1, 5, 9 };
+	PRINT_V(v)
+	auto cmp = [](int lhs, int rhs){
+		return lhs > rhs;
+	};
+	make_heap(v.begin(), v.end(), cmp);
+	PRINT_V(v)
+	pop_heap(v.begin(), v.end(), cmp);
+	PRINT_V(v)
+	pop_heap(v.begin(), v.end(), cmp);
+	PRINT_V(v)
+	
 	return 0;
 }

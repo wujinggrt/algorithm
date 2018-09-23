@@ -4,8 +4,10 @@ using namespace std;
 
 template<typename Graph>
 void graph_dfs(Graph &g);
+
 template<typename Graph>
 void graph_bfs(Graph &g);
+
 template<typename Graph>
 void graph_traverse(Graph &lg);
 
@@ -73,7 +75,7 @@ visited:4
 */
 }
 
-void testdfs()
+void test2()
 {
 
     // CLRS p.632
@@ -133,11 +135,22 @@ visited:2
 5
 
 */
+    GRAPH_RUN(v_2, vec_arcs_2, mst_prim, 0)
 }
 
 int main()
 {
-    test();
-
+    std::vector<int> v { 3, 1, 4, 1, 5, 9 };
+    auto cmp = [](int a, int b) {
+        return a > b;
+    };
+    PriorityQueue<int, decltype(cmp)>pq(v.begin(), v.end(), cmp);
+    pq.change_val(5, 2);
+    for (auto &e: vector<char>(v.size()))
+    {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+    cout << '\n';
     return 0;
 }
