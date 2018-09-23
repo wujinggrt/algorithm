@@ -8,6 +8,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include <algorithm>
 
 #define PRINTLN(v) std::cout << (v) << std::endl;
 #define PRINTENTER std::cout << std::endl;
@@ -18,6 +19,7 @@
 // index of vertices.
 struct Arc
 {
+    // tail -> head
     int tail = 0;
     int head = 0;
     int weight = 1;
@@ -30,7 +32,7 @@ enum class Color
     Black
 };
 
-/* 
+/********************************************************* 
 ListGraph
 */
 
@@ -54,6 +56,8 @@ class ListGraph
 struct ArcNode;
 struct VertexNode;
 
+// friend void bfs(const ListGraph &g);
+// friend void dfs(const ListGraph &g);
 public:
     template<typename Iter>
     ListGraph(Iter first, Iter end)
@@ -73,7 +77,7 @@ public:
     void set_edge(Arc arc)
     {
         auto tmp = vertices_[arc.tail].next;
-        auto arc_node = new ArcNode{arc.head, tmp};
+        auto arc_node = new ArcNode{arc.head, tmp, arc.weight};
         vertices_[arc.tail].next = arc_node;
     }
     // set_edge
@@ -149,9 +153,57 @@ public:
         }
     }
 
+#define PRINT_EDGE_WITH_WEIGHT(edges) \
+        do { \
+        for (auto &e: (edges)) \
+        { \
+            std::cout << "{" << e.tail << ", " << e.head << ", " << e.weight << "} " << "\n"; \
+        } \
+        std::cout << "\n"; \
+        } while (0); 
+
     auto mst_kruskal()
     {
-        
+        std::vector<Arc> edges;
+        edges.reserve(vertices_.size() * vertices_.size());
+        for (int i = 0; i < vertices_.size(); ++i)
+        {
+            make_set(vertices_[i]);
+            auto next = vertices_[i].next;
+            while (next)
+            {
+                edges.push_back(Arc{i, next->i, next->weight});
+                next=next->next;
+            }
+        }
+        edges.shrink_to_fit();
+        std::vector<Arc> result;
+        result.reserve(edges.size());
+        std::sort(edges.begin(), edges.end(), [](const Arc &lhs, const Arc &rhs){
+            return lhs.weight < rhs.weight;
+        });
+        for (auto &e: edges)
+        {
+            if (find_set(vertices_[e.tail]) != find_set(vertices_[e.head]))
+            {
+                result.push_back(e);
+                union_set(vertices_[e.tail], vertices_[e.head]);
+            }
+        }
+        PRINT_EDGE_WITH_WEIGHT(result)
+        return result;
+    }
+
+    auto mst_prim(int r = 0)
+    {
+        for (auto &u: vertices_)
+        {
+            u.d = INT_MAX;
+            u.parent = nullptr;
+        }
+        r.d = 0;
+        std::priority_queue<VertexNode*> pq;
+        for (auto &)
     }
 
     // after bfs.
@@ -201,6 +253,7 @@ private:
         ++time;
         u.f = time;
     }
+   
     int find(const T &v)
     {
         for (int i = 0; i < vertices_.size(); ++i)
@@ -214,8 +267,9 @@ private:
     }
 
 // Disjoint set.
+// Connected component.
 private:
-    void make_set(VertexNode &v)
+    void make_set(VertexNode &x)
     {
         x.parent = &x;
         x.d = 0;
@@ -223,20 +277,20 @@ private:
 
     void union_set(VertexNode &x, VertexNode &y)
     {
-        link_nodes(find_set(x), find_set(y);
+        link_nodes(find_set(x), find_set(y));
     }
 
-    auto find_set(const VertexNode &v)
+    VertexNode* find_set(const VertexNode &v)
     {
         auto ret = v.parent;
         if (&v != v.parent)
         {
-            ret = find_set(*v.p);
+            ret = find_set(*v.parent);
         }
         return ret;
     }
 
-    auto link_nodes(VertexNode *x, VertexNode *y)
+    void link_nodes(VertexNode *x, VertexNode *y)
     {
         if (x->d > y->d)
         {
@@ -276,11 +330,11 @@ private:
 
     std::vector<VertexNode> vertices_;
 };
-/* 
+/********************************************************* 
 ListGraph
 */
 
-/* 
+/********************************************************* 
 MatrxGraph
 */
 
@@ -323,7 +377,7 @@ private:
     std::vector<T> vertices_;
     std::vector<std::vector<int>> arcs_;
 };
-/* 
+/********************************************************* 
 MatrixGraph
 */ 
 

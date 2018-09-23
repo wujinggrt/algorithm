@@ -3,6 +3,16 @@
 #include <vector>
 using namespace std;
 
+#include "tmp.h"
+#include "atest.h"
+
+template<typename T>
+void print(const FriendTest<T> &h, int i)
+{
+    std::cout << h.i_ << "\n";
+    std::cout << i << "\n";
+}
+
 void f(int i = 1)
 {
 	i = 5;
@@ -13,6 +23,11 @@ struct Hehe
 {
 	int _i = 0;
 	char _c = 'a';
+
+	Hehe(vector<int> &v)
+	{
+		cout << __LINE__ << endl;
+	}
 };
 
 auto func()
@@ -21,12 +36,12 @@ auto func()
 	{
 		int i_ = 1;
 	};
-	A a;
-	cout << a.i_ << endl;
+	cout << (A{(4)}).i_ << endl;
 }
 
 int main()
 {
-	func();
+	FriendTest<int> f(100);
+	print(f, 2);
 	return 0;
 }

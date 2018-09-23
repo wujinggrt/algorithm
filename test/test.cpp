@@ -2,17 +2,18 @@
 #include <vector>
 using namespace std;
 
+template<typename T>
 class Hehe
 {
 public:
-    Hehe(int i = 0)
-        : _i{i}
+    Hehe(T t)
+        : _i{t}
         {
             cout << "__ctor" << endl;
             cout << _i << endl;
         }
     
-    int _i;
+    T _i;
 };
 
 int main()
